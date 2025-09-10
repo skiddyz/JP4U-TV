@@ -278,8 +278,9 @@
 
         <div class="tabs">
             <div class="tab active" data-tab="live">Live TV</div>
-           <! -- <div class="tab" data-tab="movies"></div> 
-           <! -- <div class="tab" data-tab="series"></div>
+           <! -- <div class="tab" data-tab="movies">Movies</div> 
+           <! -- <div class="tab" data-tab="series">Series</div>
+		   <! -- <div class="tab" data-tab="anime">Animes</div>
         </div>
 
         <div class="player-section">
@@ -330,6 +331,15 @@
                         <div class="loading">กำลังโหลดซีรีส์...</div>
                     </div>
                 </div>
+
+				<!-- Animes Section -->
+				<div class="content-section" id="series-content">
+                    <h3>📺 ซีรีส์ (TV Series)</h3>
+                    <div id="anime-list">
+                        <div class="loading">กำลังโหลดอนิเมะ...</div>
+                    </div>
+                </div>
+				
             </div>
         </div>
     </div>
@@ -867,116 +877,9 @@
             }
         });
     </script>
-
-	<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded, initializing app...');
-
-        // รหัสผ่านที่ใช้ปลดล็อค
-        const lockedPasswords = {
-            "Pigoo🔞(NSFW)": "1234", 
-            "V Paradise💸🔞 (NSFW)": "5678"
-        };
-
-        // ช่องที่ต้องใส่รหัส
-        const lockedChannels = Object.keys(lockedPasswords);
-
-        const liveChannels = [
-            { name: "Pigoo🔞(NSFW)", url: "https://ca01.utako.moe/pigoo/index.m3u8" },
-            { name: "V Paradise💸🔞 (NSFW)", url: "https://ca01.utako.moe/v_paradise/index.m3u8" }
-        ];
-
-        let player = videojs('video-player', { fluid: true, responsive: true });
-        let currentContent = null;
-
-        function playContent(content) {
-            console.log('Playing content:', content.name);
-            currentContent = content;
-
-            player.src({
-                src: content.url,
-                type: content.url.includes('.m3u8') ? 'application/x-mpegURL' : 'video/mp4'
-            });
-
-            document.getElementById('current-title').textContent = content.name;
-            document.getElementById('current-description').textContent = `กำลังเล่น: ${content.name}`;
-
-            player.ready(() => {
-                player.play().catch(e => console.log('Autoplay prevented:', e));
-            });
-        }
-
-        function loadChannels() {
-            const channelsList = document.getElementById('channels-list');
-            channelsList.innerHTML = '';
-            
-            liveChannels.forEach(channel => {
-                const channelDiv = document.createElement('div');
-                channelDiv.className = 'channel-item';
-                channelDiv.innerHTML = `<div class="channel-name">${channel.name}</div>`;
-
-                channelDiv.addEventListener('click', () => {
-                    if (lockedChannels.includes(channel.name)) {
-                        // เช็คว่าปลดล็อคแล้วหรือยัง
-                        if (localStorage.getItem("unlocked-" + channel.name)) {
-                            playContent(channel);
-                        } else {
-                            openPopup(channel);
-                        }
-                    } else {
-                        playContent(channel);
-                    }
-                });
-
-                channelsList.appendChild(channelDiv);
-            });
-        }
-
-        // === Popup System ===
-        function openPopup(channel) {
-            const popup = document.getElementById("password-popup");
-            popup.style.display = "flex";
-
-            const btn = document.getElementById("popup-submit");
-            const input = document.getElementById("popup-password");
-            const errorMsg = document.getElementById("popup-error");
-
-            input.value = "";
-            errorMsg.style.display = "none";
-
-            btn.onclick = () => {
-                if (input.value === lockedPasswords[channel.name]) {
-                    localStorage.setItem("unlocked-" + channel.name, true);
-                    popup.style.display = "none";
-                    playContent(channel);
-                } else {
-                    errorMsg.style.display = "block";
-                }
-            };
-        }
-
-        // init
-        loadChannels();
-    });
-</script>
-
-<!-- 🔒 Popup HTML -->
-<div id="password-popup" style="display:none; 
-    position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.7); justify-content:center; align-items:center; z-index:9999;">
-    <div style="background:#1a1a2e; padding:30px; border-radius:10px; text-align:center; max-width:300px; width:100%;">
-        <h3 style="margin-bottom:15px;">🔒 ใส่รหัสผ่านเพื่อเข้าช่อง</h3>
-        <input type="password" id="popup-password" placeholder="รหัสผ่าน" 
-               style="width:100%; padding:10px; margin-bottom:10px; border-radius:5px; border:none; text-align:center;">
-        <div id="popup-error" style="color:#ff6b6b; display:none; margin-bottom:10px;">รหัสผิด ❌</div>
-        <button id="popup-submit" 
-                style="padding:10px 20px; background:#4ecdc4; border:none; border-radius:5px; cursor:pointer;">ยืนยัน</button>
-    </div>
-</div>
-
-	
 </body>	
 </html>
+
 
 
 
