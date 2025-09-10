@@ -626,6 +626,48 @@
                 }
             ];
 
+			function playContent(content, type) {
+    console.log('Playing content:', content.name, content.url);
+    currentContent = content;
+
+    // เช็คว่าช่องนี้เป็นช่อง Locked หรือเปล่า
+    const lockedChannels = ["Pigoo🔞(NSFW)", "V Paradise💸🔞 (NSFW)"];
+    if (lockedChannels.includes(content.name)) {
+        const password = prompt("🔒 ใส่รหัสผ่านเพื่อเข้าชมช่องนี้:");
+        if (password !== "JP4S3X") { // <-- ฟลุ๊คตั้งรหัสเองได้
+            alert("❌ รหัสไม่ถูกต้อง! กลับไปเลือกช่องอื่นนะครับ");
+            return;
+        }
+    }
+
+    if (!player) {
+        console.error('Player not initialized');
+        return;
+    }
+
+    try {
+        // Update player source
+        player.src({
+            src: content.url,
+            type: content.url.includes('.m3u8') ? 'application/x-mpegURL' : 'video/mp4'
+        });
+
+        // Update current info
+        document.getElementById('current-title').textContent = content.name;
+        document.getElementById('current-description').textContent = `กำลังเล่น: ${content.name}`;
+
+        // Play the content
+        player.ready(() => {
+            player.play().catch(e => {
+                console.log('Autoplay prevented:', e);
+            });
+        });
+    } catch (error) {
+        console.error('Error playing content:', error);
+    }
+}
+
+
             // Initialize Video.js player
             let player;
             
@@ -837,4 +879,5 @@
     </script>
 </body>
 </html>
+
 
