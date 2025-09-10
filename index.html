@@ -149,7 +149,7 @@
             display: block;
         }
 
-        .channel-item, .movie-item, .series-item {
+        .channel-item, .movie-item, .series-item, .anime-item {
             padding: 12px;
             margin-bottom: 8px;
             background: rgba(255, 255, 255, 0.05);
@@ -159,13 +159,13 @@
             border-left: 3px solid transparent;
         }
 
-        .channel-item:hover, .movie-item:hover, .series-item:hover {
+        .channel-item:hover, .movie-item:hover, .series-item:hover, .anime-item:hover {
             background: rgba(255, 255, 255, 0.15);
             border-left-color: #4ecdc4;
             transform: translateX(5px);
         }
 
-        .channel-item.active, .movie-item.active, .episode-item.active {
+        .channel-item.active, .movie-item.active, .episode-item.active, .animelist-item.active {
             background: linear-gradient(45deg, rgba(255, 107, 107, 0.3), rgba(78, 205, 196, 0.3));
             border-left-color: #ff6b6b;
         }
@@ -199,6 +199,33 @@
         }
 
         .episode-item:hover {
+            background: rgba(78, 205, 196, 0.2);
+            border-left-color: #4ecdc4;
+        }
+
+		.anime-episodes {
+            margin-top: 10px;
+            padding-left: 15px;
+            display: none;
+        }
+
+        .anime-item.expanded .anime-episodes {
+            display: block;
+        }
+
+        .animelist-item {
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            font-weight: 400;
+        }
+
+        .animelist-item:hover {
             background: rgba(78, 205, 196, 0.2);
             border-left-color: #4ecdc4;
         }
@@ -278,9 +305,9 @@
 
         <div class="tabs">
             <div class="tab active" data-tab="live">Live TV</div>
-           <! -- <div class="tab" data-tab="movies">Movies</div> 
-           <! -- <div class="tab" data-tab="series">Series</div>
-		   <! -- <div class="tab" data-tab="anime">Animes</div>
+            <div class="tab" data-tab="movies">Movies</div> 
+            <div class="tab" data-tab="series">Series</div>
+		    <div class="tab" data-tab="anime">Animes</div>
         </div>
 
         <div class="player-section">
@@ -879,6 +906,7 @@
     </script>
 </body>	
 </html>
+
 
 
 
