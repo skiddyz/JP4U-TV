@@ -304,10 +304,10 @@
         </div>
 
         <div class="tabs">
-            <div class="tab active" data-tab="live">Live TV</div>
-            <div class="tab" data-tab="movies">Movies</div> 
-            <div class="tab" data-tab="series">Series</div>
-		    <div class="tab" data-tab="anime">Animes</div>
+            // <div class="tab active" data-tab="live">Live TV</div>
+            // <div class="tab" data-tab="movies">Movies</div> 
+            // <div class="tab" data-tab="series">Series</div>
+		    // <div class="tab" data-tab="anime">Animes</div>
         </div>
 
         <div class="player-section">
@@ -360,8 +360,8 @@
                 </div>
 
 				<!-- Animes Section -->
-				<div class="content-section" id="series-content">
-                    <h3>📺 ซีรีส์ (TV Series)</h3>
+				<div class="content-section" id="anime-content">
+                    <h3>📺 Anime (อนิเมะ)</h3>
                     <div id="anime-list">
                         <div class="loading">กำลังโหลดอนิเมะ...</div>
                     </div>
@@ -663,6 +663,15 @@
                 }
             ];
 
+			const animes = [
+                {
+                    name: "[พากย์ไทย] Beyond Goodbye (2024) เกินจะเอ่ยคำลา",
+                    animelist: [
+                        { name: "เร็วๆนี้", url: "" }
+                    ]
+                }
+            ];
+
 			function playContent(content, type) {
     console.log('Playing content:', content.name, content.url);
     currentContent = content;
@@ -906,6 +915,7 @@
     </script>
 </body>	
 </html>
+
 
 
 
