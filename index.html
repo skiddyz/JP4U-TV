@@ -867,32 +867,163 @@
             }
         });
     </script>
-</body>
 
-	
-  <!-- Popup Lock Modal -->
-  <div id="lockModal" class="modal hidden">
-    <div class="modal-content">
-      <h2>🔒 ใส่รหัสผ่าน</h2>
-      <input type="password" id="channelPassword" placeholder="รหัสลับ..." />
-      <div class="modal-buttons">
-        <button onclick="checkPassword()">ยืนยัน</button>
-        <button onclick="closeLockModal()">ยกเลิก</button>
-      </div>
-      <p id="errorMessage" style="color:red; display:none;">❌ รหัสไม่ถูกต้อง!</p>
+	<!-- Popup Password Modal -->
+<div id="passwordModal" class="modal">
+  <div class="modal-content">
+    <h2>🔒 ช่องนี้ล็อกอยู่</h2>
+    <p>กรุณาใส่รหัสผ่านเพื่อเข้าชม</p>
+    <input type="password" id="channelPassword" placeholder="ใส่รหัสผ่าน...">
+    <div class="modal-buttons">
+      <button id="submitPassword">ยืนยัน</button>
+      <button id="cancelPassword">ยกเลิก</button>
     </div>
+    <p id="passwordError" style="color: red; display:none; margin-top:10px;">รหัสผ่านไม่ถูกต้อง!</p>
   </div>
+</div>
+
+<style>
+/* Modal popup style */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #1a1a2e;
+  padding: 25px;
+  border-radius: 12px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.modal-content h2 {
+  margin-bottom: 10px;
+  color: #ff6b6b;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-buttons button {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(45deg, #4ecdc4, #45b7d1);
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.modal-buttons button:hover {
+  background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+}
+</style>
 
 <script>
-    let player = videojs('videoPlayer');
-    let currentTab = 'live';
-    let currentContent = null;
-    let pendingLockedContent = null;
-    const lockedChannels = ["Pigoo🔞(NSFW)", "V Paradise💸🔞 (NSFW)"];
-    const channelPassword = "1234"; // ✅ ฟลุ๊คเปลี่ยนได้
+let lockedChannels = ["Pigoo🔞(NSFW)", "V Paradise💸🔞 (NSFW)"];
+let correctPassword = "1234"; // ฟลุ๊คเปลี่ยนรหัสได้ตรงนี้
+let pendingChannel = null;
+
+// ฟังก์ชันแก้ไขจาก loadChannels()
+function loadChannels() {
+  console.log('Loading channels...');
+  const channelsList = document.getElementById('channels-list');
+  channelsList.innerHTML = '';
+  
+  liveChannels.forEach((channel) => {
+    const channelDiv = document.createElement('div');
+    channelDiv.className = 'channel-item';
+    channelDiv.innerHTML = `<div class="channel-name">${channel.name}</div>`;
+    
+    channelDiv.addEventListener('click', () => {
+      console.log('Channel clicked:', channel.name);
+      if (lockedChannels.includes(channel.name)) {
+        pendingChannel = channel;
+        document.getElementById("passwordModal").style.display = "flex";
+      } else {
+        playContent(channel, 'channel');
+        setActiveItem(channelDiv, 'channel-item');
+      }
+    });
+    
+    channelsList.appendChild(channelDiv);
+  });
+  console.log('Channels loaded');
+}
+
+// Password modal actions
+document.getElementById("submitPassword").addEventListener("click", () => {
+  let inputPass = document.getElementById("channelPassword").value;
+  if (inputPass === correctPassword) {
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("passwordError").style.display = "none";
+    document.getElementById("channelPassword").value = "";
+    if (pendingChannel) {
+      playContent(pendingChannel, 'channel');
+      setActiveItem(
+        [...document.querySelectorAll('.channel-item')].find(item => 
+          item.textContent.includes(pendingChannel.name)), 'channel-item');
+      pendingChannel = null;
+    }
+  } else {
+    document.getElementById("passwordError").style.display = "block";
+  }
+});
+
+document.getElementById("cancelPassword").addEventListener("click", () => {
+  document.getElementById("passwordModal").style.display = "none";
+  document.getElementById("passwordError").style.display = "none";
+  document.getElementById("channelPassword").value = "";
+  pendingChannel = null;
+});
+
+// กดนอกกล่องปิด modal ได้
+window.addEventListener("click", (e) => {
+  if (e.target.id === "passwordModal") {
+    document.getElementById("passwordModal").style.display = "none";
+    document.getElementById("passwordError").style.display = "none";
+    document.getElementById("channelPassword").value = "";
+    pendingChannel = null;
+  }
+});
 </script>
+
 	
+</body>	
 </html>
+
 
 
 
