@@ -630,16 +630,6 @@
     console.log('Playing content:', content.name, content.url);
     currentContent = content;
 
-    // เช็คว่าช่องนี้เป็นช่อง Locked หรือเปล่า
-    const lockedChannels = ["Pigoo🔞(NSFW)", "V Paradise💸🔞 (NSFW)"];
-    if (lockedChannels.includes(content.name)) {
-        const password = prompt("🔒 ใส่รหัสผ่านเพื่อเข้าชมช่องนี้:");
-        if (password !== "JP4S3X") { // <-- ฟลุ๊คตั้งรหัสเองได้
-            alert("❌ รหัสไม่ถูกต้อง! กลับไปเลือกช่องอื่นนะครับ");
-            return;
-        }
-    }
-
     if (!player) {
         console.error('Player not initialized');
         return;
@@ -878,6 +868,32 @@
         });
     </script>
 </body>
+
+	
+  <!-- Popup Lock Modal -->
+  <div id="lockModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>🔒 ใส่รหัสผ่าน</h2>
+      <input type="password" id="channelPassword" placeholder="รหัสลับ..." />
+      <div class="modal-buttons">
+        <button onclick="checkPassword()">ยืนยัน</button>
+        <button onclick="closeLockModal()">ยกเลิก</button>
+      </div>
+      <p id="errorMessage" style="color:red; display:none;">❌ รหัสไม่ถูกต้อง!</p>
+    </div>
+  </div>
+
+<script>
+    let player = videojs('videoPlayer');
+    let currentTab = 'live';
+    let currentContent = null;
+    let pendingLockedContent = null;
+    const lockedChannels = ["Pigoo🔞(NSFW)", "V Paradise💸🔞 (NSFW)"];
+    const channelPassword = "1234"; // ✅ ฟลุ๊คเปลี่ยนได้
+</script>
+	
 </html>
+
+
 
 
